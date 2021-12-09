@@ -5,11 +5,11 @@ public class Bullet {
   private PVector direction;
   private int maxDistance;
   private int damage;
-  private float velocity;
+  private float velocityLimit;
   private int size;
-  private color bulletColor;
+  private color objColor;
 
-  private long time = millis();
+  private long time;
 
   public Bullet(PVector startPosition, PVector direction, int maxDistance, int damage) {
     this.startPosition = startPosition;
@@ -17,11 +17,13 @@ public class Bullet {
     this.direction = direction;
     this.maxDistance = maxDistance;
     this.damage = damage;
-    this.velocity = 50;
+    this.velocityLimit = 50;
     this.size = 5;
-    this.bulletColor = color(0);
+    this.objColor = color(0);
+
+    time = millis();
   }
-  
+
   public int getDamage() {
     return damage;
   }
@@ -30,9 +32,10 @@ public class Bullet {
     float deltaTime = (millis() - time) * 0.01f;
     time = millis();
 
-    position.add(PVector.mult(direction, velocity * deltaTime));
+    position.add(PVector.mult(direction, velocityLimit * deltaTime));
 
-    fill(bulletColor);
+    noStroke();
+    fill(objColor);
     ellipse(position.x, position.y, size, size);
   }
 
@@ -40,7 +43,7 @@ public class Bullet {
     return PVector.sub(position, startPosition).mag() <= maxDistance;
   }
 
-  public boolean isHit(Animal animal) {
-    return PVector.sub(position, animal.getPosition()).mag() <= animal.getSize();
+  public boolean isHit(Organism organism) {
+    return PVector.sub(position, organism.getPosition()).mag() <= organism.getSize();
   }
 }

@@ -1,35 +1,29 @@
-public class Hunter {
+public class Hunter extends Organism {
 
-  private Field field;
-  private int health;
-  private PVector position;
-  private float velocity;
-  private int size;
-  private color hunterColor;
   private Weapon weapon;
-  private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+  private ArrayList<Bullet> bullets;
 
-  private long time = millis();
-  private boolean[] moves = new boolean[4];
+  private long time;
+  private boolean[] moves;
 
-  public Hunter(Field field) {
-    this.field = field;
-    health = 1;
-    position = new PVector(field.getWidth() / 2, field.getHeight() / 2);
-    velocity = 10;
-    size = 30;
-    hunterColor = color(0, 128, 128);
-    this.weapon = new Weapon(10, 200, 1);
-  }
+  public Hunter(Field field, Weapon weapon) {
+    super(field, 1, 1, new PVector(field.getWidth() / 2, field.getHeight() / 2), 10, 30, color(0, 128, 128));
 
-  public PVector getPosition() {
-    return position;
+    this.weapon = weapon;
+    bullets = new ArrayList<Bullet>();
+    moves = new boolean[4];
+
+    time = millis();
   }
 
   public Weapon getWeapon() {
     return weapon;
   }
-  
+
+  public void setWeapon(Weapon weapon) {
+    this.weapon = weapon;
+  }
+
   public ArrayList<Bullet> getBullets() {
     return bullets;
   }
@@ -44,8 +38,9 @@ public class Hunter {
 
     applyMove();
 
-    fill(hunterColor);
-    ellipse(position.x, position.y, size, size);
+    stroke(0);
+    fill(getColor());
+    ellipse(getPosition().x, getPosition().y, getSize(), getSize());
   }
 
   public void setMove(int i, boolean state) {
@@ -53,7 +48,7 @@ public class Hunter {
   }
 
   public void makeShot(PVector mousePosition) {
-    Bullet bullet = weapon.makeShot(new PVector(position.x, position.y), new PVector(mousePosition.x - position.x, mouseY - position.y));
+    Bullet bullet = weapon.makeShot(new PVector(getPosition().x, getPosition().y), new PVector(mousePosition.x - getPosition().x, mouseY - getPosition().y));
 
     if (bullet != null) {
       bullets.add(bullet);
@@ -64,36 +59,16 @@ public class Hunter {
     float deltaTime = (millis() - time) * 0.01f;
     time = millis();
 
-    //if (keyPressed) 
-    {
-      if (moves[0]) {
-        position.y -= velocity * deltaTime;
-      } else if (moves[1]) {
-        position.y += velocity * deltaTime;
-      }
-
-      if (moves[2]) {
-        position.x -= velocity * deltaTime;
-      } else if (moves[3]) {
-        position.x += velocity * deltaTime;
-      }
-    }
-  }
-  
-  public boolean isOnField() {
-    if (position.x > field.getPosition().x && position.y > field.getPosition().y 
-      && position.x < field.getPosition().x + field.getWidth() && position.y < field.getPosition().y + field.getHeight()) {
-      return true;
+    if (moves[0]) {
+      getPosition().y -= getVelocityLimit() * deltaTime;
+    } else if (moves[1]) {
+      getPosition().y += getVelocityLimit() * deltaTime;
     }
 
-    return false;
-  }
-  
-  public void doDamage(int damage) {
-    health -= damage;
-  }
-
-  public boolean isAlive() {
-    return health > 0;
+    if (moves[2]) {
+      getPosition().x -= getVelocityLimit() * deltaTime;
+    } else if (moves[3]) {
+      getPosition().x += getVelocityLimit() * deltaTime;
+    }
   }
 }

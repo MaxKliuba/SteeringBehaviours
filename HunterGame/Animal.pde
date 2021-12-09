@@ -1,40 +1,34 @@
-public abstract class Animal {
+public abstract class Animal extends Organism {
 
   private static final float EPSILON = 0.05f;
 
-  private Field field;
-  private int health;
-  private PVector position;
+  private float steeringForceLimit;
   private PVector velocity;
   private PVector acceleration;
-  private float mass;
-  private float velocityLimit;
-  private float steeringForceLimit;
-  private int size;
-  private color animalColor;
 
-  private long time = millis();
+  private long time;
 
-  public Animal(Field field, int mass, float velocityLimit, float steeringForceLimit, int size, color animalColor) {
-    this.field = field;
-    health = 1;
-    this.position = new PVector(random(field.getPosition().x, field.getWidth()), random(field.getPosition().y, field.getHeight()));
+  public Animal(Field field, int health, int mass, float velocityLimit, int size, color objColor, float steeringForceLimit) {
+    super(field, health, mass, new PVector(random(field.getPosition().x + 100, field.getWidth() - 100), random(field.getPosition().y + 100, field.getHeight() - 100)), velocityLimit, size, objColor);
+
+    this.steeringForceLimit = steeringForceLimit;
+
     this.velocity = new PVector(0.0f, 0.0f);
     this.acceleration = new PVector(0.0f, 0.0f);
 
-    this.mass = mass;
-    this.velocityLimit = velocityLimit;
-    this.steeringForceLimit = steeringForceLimit;
-    this.size = size;
-    this.animalColor = animalColor;
+    time = millis();
   }
 
-  public PVector getPosition() {
-    return position;
+  public float getSteeringForceLimit() {
+    return steeringForceLimit;
   }
 
-  public int getSize() {
-    return size;
+  public PVector getVelocity() {
+    return velocity;
+  }
+
+  public PVector getAcceleration() {
+    return acceleration;
   }
 
   public void update() {
@@ -48,7 +42,7 @@ public abstract class Animal {
   protected abstract ArrayList<Target> getTargets();
 
   private void applyForce(PVector force) {
-    force.div(mass);
+    force.div(getMass());
     acceleration.add(force);
   }
 
@@ -60,16 +54,15 @@ public abstract class Animal {
 
   private void applySteeringForce() {
     ArrayList<Target> targets = getTargets();
-    //targets.add(new Target(new PVector(position.x, field.getPosition().y), false));
-    //targets.add(new Target(new PVector(field.getPosition().x + field.getWidth(), position.y), false));
-    //targets.add(new Target(new PVector(position.x, field.getPosition().y + field.getHeight()), false));
-    //targets.add(new Target(new PVector(field.getPosition().x, position.y), false));
-    //println(targets);
+    targets.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y)));
+    targets.add(new AvoidEdges(new PVector(field.getPosition().x + field.getWidth(), getPosition().y)));
+    targets.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y + field.getHeight())));
+    targets.add(new AvoidEdges(new PVector(field.getPosition().x, getPosition().y)));
 
     PVector steering = new PVector(0.0f, 0.0f);
 
     for (int i = 0; i < targets.size(); i++) {
-      PVector desiredVelocity = getDesiredVelocity(targets.get(i));
+      PVector desiredVelocity = targets.get(i).getDesiredVelocity(this);
       steering.add(PVector.sub(desiredVelocity, velocity));
     }
     steering.sub(velocity);
@@ -87,44 +80,17 @@ public abstract class Animal {
 
     velocity.add(PVector.mult(acceleration, deltaTime));
 
-    if (velocity.mag() > velocityLimit) {
-      velocity.setMag(velocityLimit);
+    if (velocity.mag() > getVelocityLimit()) {
+      velocity.setMag(getVelocityLimit());
     } else if (velocity.mag() < EPSILON) {
       velocity.set(0.0f, 0.0f);
     }
 
     acceleration.set(0.0f, 0.0f);
-    position.add(PVector.mult(velocity, deltaTime));
+    setPosition(PVector.add(getPosition(), PVector.mult(velocity, deltaTime)));
 
-    fill(animalColor);
-    ellipse(position.x, position.y, size, size);
-  }
-
-  private PVector getDesiredVelocity(Target target) {
-    PVector distance = target.getPosition().sub(position);
-    float k = 1;
-    float arriveRadius = velocityLimit;
-    if (distance.mag() < arriveRadius) {
-      k = distance.mag() / arriveRadius;
-    }
-
-    return distance.normalize().mult(velocityLimit * k).div(target.getDirection());
-  }
-
-  public boolean isOnField() {
-    if (position.x > field.getPosition().x && position.y > field.getPosition().y 
-      && position.x < field.getPosition().x + field.getWidth() && position.y < field.getPosition().y + field.getHeight()) {
-      return true;
-    }
-
-    return false;
-  }
-
-  public void doDamage(int damage) {
-    health -= damage;
-  }
-
-  public boolean isAlive() {
-    return health > 0;
+    stroke(0);
+    fill(getColor());
+    ellipse(getPosition().x, getPosition().y, getSize(), getSize());
   }
 }

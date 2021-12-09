@@ -30,6 +30,10 @@ public class Weapon {
     return bulletsCount;
   }
 
+  public void setBulletCount(int bulletsCount) {
+    this.bulletsCount = bulletsCount;
+  }
+
   public int getMaxDistance() {
     return maxDistance;
   }
