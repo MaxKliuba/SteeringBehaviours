@@ -1,10 +1,13 @@
 public class Rebbit extends Animal {
 
-  public Rebbit() {
-    super(1, 10, 1, 20, color(190, 190, 190));
+  public Rebbit(Field field) {
+    super(field, 1, 100, 10, 20, color(190, 190, 190));
   }
 
-  protected PVector[] getTargets() {
-    return new PVector[] {new PVector(mouseX, mouseY)};
+  protected ArrayList<Target> getTargets() {
+    ArrayList<Target> targets = new ArrayList<Target>();
+    targets.add(new Target(new PVector(mouseX, mouseY), true));
+
+    return targets;
   }
 }

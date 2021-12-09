@@ -1,7 +1,9 @@
 public abstract class Animal {
 
-  private final float EPSILON = 0.05f;
+  private static final float EPSILON = 0.05f;
 
+  private Field field;
+  private int health;
   private PVector position;
   private PVector velocity;
   private PVector acceleration;
@@ -13,8 +15,10 @@ public abstract class Animal {
 
   private long time = millis();
 
-  public Animal(int mass, float velocityLimit, float steeringForceLimit, int size, color animalColor) {
-    this.position = new PVector(100.0f, 100.0f);
+  public Animal(Field field, int mass, float velocityLimit, float steeringForceLimit, int size, color animalColor) {
+    this.field = field;
+    health = 1;
+    this.position = new PVector(random(field.getPosition().x, field.getWidth()), random(field.getPosition().y, field.getHeight()));
     this.velocity = new PVector(0.0f, 0.0f);
     this.acceleration = new PVector(0.0f, 0.0f);
 
@@ -29,6 +33,10 @@ public abstract class Animal {
     return position;
   }
 
+  public int getSize() {
+    return size;
+  }
+
   public void update() {
     applyFriction();
 
@@ -37,7 +45,7 @@ public abstract class Animal {
     applyForces();
   }
 
-  protected abstract PVector[] getTargets();
+  protected abstract ArrayList<Target> getTargets();
 
   private void applyForce(PVector force) {
     force.div(mass);
@@ -45,17 +53,23 @@ public abstract class Animal {
   }
 
   private void applyFriction() { 
-    PVector friction = PVector.mult(velocity, -1).normalize().mult(0.5f);;
+    PVector friction = PVector.mult(velocity, -1).normalize().mult(0.5f);
 
     applyForce(friction);
   }
 
   private void applySteeringForce() {
-    PVector[] targets = getTargets();
+    ArrayList<Target> targets = getTargets();
+    //targets.add(new Target(new PVector(position.x, field.getPosition().y), false));
+    //targets.add(new Target(new PVector(field.getPosition().x + field.getWidth(), position.y), false));
+    //targets.add(new Target(new PVector(position.x, field.getPosition().y + field.getHeight()), false));
+    //targets.add(new Target(new PVector(field.getPosition().x, position.y), false));
+    //println(targets);
+
     PVector steering = new PVector(0.0f, 0.0f);
 
-    for (int i = 0; i < targets.length; i++) {
-      PVector desiredVelocity = getDesiredVelocity(targets[i]);
+    for (int i = 0; i < targets.size(); i++) {
+      PVector desiredVelocity = getDesiredVelocity(targets.get(i));
       steering.add(PVector.sub(desiredVelocity, velocity));
     }
     steering.sub(velocity);
@@ -86,15 +100,31 @@ public abstract class Animal {
     ellipse(position.x, position.y, size, size);
   }
 
-  private PVector getDesiredVelocity(PVector target) {
-    PVector distance = new PVector(target.x, target.y);
-    distance.sub(position);
+  private PVector getDesiredVelocity(Target target) {
+    PVector distance = target.getPosition().sub(position);
     float k = 1;
     float arriveRadius = velocityLimit;
     if (distance.mag() < arriveRadius) {
       k = distance.mag() / arriveRadius;
     }
 
-    return distance.normalize().mult(velocityLimit * k);
+    return distance.normalize().mult(velocityLimit * k).div(target.getDirection());
+  }
+
+  public boolean isOnField() {
+    if (position.x > field.getPosition().x && position.y > field.getPosition().y 
+      && position.x < field.getPosition().x + field.getWidth() && position.y < field.getPosition().y + field.getHeight()) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public void doDamage(int damage) {
+    health -= damage;
+  }
+
+  public boolean isAlive() {
+    return health > 0;
   }
 }
