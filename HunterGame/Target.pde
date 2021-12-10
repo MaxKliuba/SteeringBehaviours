@@ -9,7 +9,7 @@ public abstract class Target {
   public PVector getPosition() {
     return position;
   }
-  
+
   public abstract PVector getDesiredVelocity(Animal animal);
 
   public String toString() { 

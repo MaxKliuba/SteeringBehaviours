@@ -5,13 +5,13 @@ public class Wolf extends Animal {
 
   private long lifeTimer;
 
-  public Wolf(Field field, int damage, int lifeSpan) {
-    super(field, 1, 1, 25, color(60, 60, 70), 75, 75, 10, 300, 0);
+  public Wolf(Field field) {
+    super(field, 1, 1, 25, color(60, 60, 70), 40, 40, 10, 200, 0);
 
-    this.damage = damage;
-    this.lifeSpan = lifeSpan;
+    this.damage = 1;
+    this.lifeSpan = 20000;
 
-    lifeTimer = millis();
+    this.lifeTimer = millis();
   }
 
   protected ArrayList<Target> getTargets() {
@@ -25,7 +25,7 @@ public class Wolf extends Animal {
     for (int i = 0; i < field.getOrganisms().size(); i++) {
       Organism organism = field.getOrganisms().get(i);
 
-      if (organism instanceof Rebbit || organism instanceof Hunter) {
+      if (!(organism instanceof Wolf)) {
         targets.add(new Seek(organism.getPosition().copy()));
       }
     }

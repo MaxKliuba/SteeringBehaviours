@@ -24,9 +24,9 @@ public abstract class Animal extends Organism {
     this.velocity = new PVector(0.0f, 0.0f);
     this.acceleration = new PVector(0.0f, 0.0f);
 
-    time = millis();
+    this.time = millis();
   }
-  
+
   public float getMinVelocityLimit() {
     return minVelocityLimit;
   }
@@ -34,11 +34,11 @@ public abstract class Animal extends Organism {
   public float getSteeringForceLimit() {
     return steeringForceLimit;
   }
-  
+
   public int getMaxFeelDistance() {
     return maxFeelDistance;
   }
-  
+
   public int getMinFeelDistance() {
     return minFeelDistance;
   }

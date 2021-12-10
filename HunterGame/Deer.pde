@@ -1,7 +1,7 @@
-public class Rebbit extends Animal {
+public class Deer extends Animal {
 
-  public Rebbit(Field field) {
-    super(field, 1, 1, 15, color(190, 190, 190), 60, 10, 5, 100, 0);
+  public Deer(Field field) {
+    super(field, 1, 1, 20, color(210, 90, 40), 25, 25, 10, 300, 50);
   }
 
   protected ArrayList<Target> getTargets() {
@@ -15,7 +15,11 @@ public class Rebbit extends Animal {
     for (int i = 0; i < field.getOrganisms().size(); i++) {
       Organism organism = field.getOrganisms().get(i);
 
-      if (!organism.equals(this)) {
+      if (organism instanceof Deer) {
+        targets.add(new Seek(organism.getPosition().copy()));
+      }
+
+      if (organism instanceof Wolf || organism instanceof Hunter) {
         targets.add(new Flee(organism.getPosition().copy()));
       }
     }

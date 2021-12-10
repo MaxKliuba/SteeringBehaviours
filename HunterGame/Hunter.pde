@@ -7,7 +7,7 @@ public class Hunter extends Organism {
   private boolean[] moves;
 
   public Hunter(Field field, Weapon weapon) {
-    super(field, 1, 1, 30, color(0, 128, 128), new PVector(field.getPosition().x + 30, field.getPosition().y + 30), 10);
+    super(field, 1, 1, 30, color(0, 128, 128), new PVector(field.getWidth(), field.getHeight()), 10);
 
     this.weapon = weapon;
     bullets = new ArrayList<Bullet>();

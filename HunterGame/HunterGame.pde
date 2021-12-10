@@ -103,8 +103,12 @@ void startGame() {
     field.addOrganism(new Rebbit(field));
   }
 
+  for (int i = 0; i < 7; i++) {
+    field.addOrganism(new Deer(field));
+  }
+
   for (int i = 0; i < 3; i++) {
-    field.addOrganism(new Wolf(field, 1, 10000));
+    field.addOrganism(new Wolf(field));
   }
 
   field.addOrganism(hunter);

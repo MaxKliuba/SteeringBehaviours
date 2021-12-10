@@ -43,7 +43,7 @@ public class Field {
     fill(fieldColor);
     rect(position.x, position.y, fieldWidth, fieldHeight, 15);
   }
-  
+
   public void reset() {
     organisms = new ArrayList<Organism>();
   }
