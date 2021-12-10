@@ -18,7 +18,7 @@ public class Rebbit extends Animal {
       }
     }
     targets.add(new Wander(getPosition()));
-    targets.add(new Flee(new PVector(mouseX, mouseY)));
+    //targets.add(new Flee(new PVector(mouseX, mouseY)));
 
     return targets;
   }

@@ -9,7 +9,7 @@ public class Wander extends Target {
     super(position);
   }
 
-  public PVector getDesiredVelocity(Animal animal) {
+  public PVector getDesiredVelocity(Animal animal) {   
     float rnd = random(0, 2);
     if (rnd < 1) {
       angle += angleChangeStep;

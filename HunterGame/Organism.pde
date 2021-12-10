@@ -66,12 +66,12 @@ public abstract class Organism {
       return true;
     }
 
-    doDamage(health);
+    applyDamage(health);
 
     return false;
   }
 
-  public boolean doDamage(int damage) {
+  public boolean applyDamage(int damage) {
     health -= damage;
 
     return !isAlive();

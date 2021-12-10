@@ -26,30 +26,41 @@ void draw() {
     field.update();
 
     for (int i = 0; i < field.getOrganisms().size(); i++) {
-      field.getOrganisms().get(i).update();
+      Organism organism = field.getOrganisms().get(i);
 
-      if (!field.getOrganisms().get(i).isOnField()) {
-        field.getOrganisms().remove(i);
+      organism.update();
 
-        continue;
-      }
+      organism.isOnField();
 
-      if (field.getOrganisms().get(i) instanceof  Hunter) {
-        continue;
-      }
-
-      ArrayList<Bullet> bullets = hunter.getBullets();
-      for (int j = 0; j < bullets.size(); j++) {
-        if (bullets.get(j).isHit(field.getOrganisms().get(i)) && field.getOrganisms().get(i).doDamage(bullets.get(j).getDamage())) {
-          field.getOrganisms().remove(i);
-          hunter.getBullets().remove(j);
-          break;
+      if (!(organism instanceof  Hunter) && organism.isAlive()) {
+        ArrayList<Bullet> bullets = hunter.getBullets();
+        for (int j = 0; j < bullets.size(); j++) {
+          if (bullets.get(j).canDoDamage(organism) && organism.applyDamage(bullets.get(j).getDamage())) {
+            hunter.getBullets().remove(j);
+            break;
+          }
         }
       }
-    }
 
-    if (!hunter.isAlive()) {
-      isGameOver = true;
+      if (!(organism instanceof Wolf) && organism.isAlive()) {
+        for (int j = 0; j < field.getOrganisms().size(); j++) {
+          if (field.getOrganisms().get(j) instanceof Wolf) { 
+            Wolf wolf = (Wolf) field.getOrganisms().get(j);
+
+            if (wolf.canDoDamage(organism)) {
+              organism.applyDamage(wolf.getDamage());
+            }
+          }
+        }
+      }
+
+      if (!organism.isAlive()) {
+        field.getOrganisms().remove(i);
+
+        if (organism instanceof Hunter) {
+          isGameOver = true;
+        }
+      }
     }
 
     noStroke();
@@ -88,9 +99,14 @@ void startGame() {
   weapon = new Weapon(100, 300, 1);
   hunter = new Hunter(field, weapon);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 10; i++) {
     field.addOrganism(new Rebbit(field));
   }
+
+  for (int i = 0; i < 3; i++) {
+    field.addOrganism(new Wolf(field, 1, 10000));
+  }
+
   field.addOrganism(hunter);
 
   isGameOver = false;

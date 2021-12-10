@@ -43,7 +43,7 @@ public class Bullet {
     return PVector.sub(position, startPosition).mag() <= maxDistance;
   }
 
-  public boolean isHit(Organism organism) {
+  public boolean canDoDamage(Organism organism) {
     return PVector.sub(position, organism.getPosition()).mag() <= organism.getSize();
   }
 }
