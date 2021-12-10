@@ -13,6 +13,6 @@ public class Seek extends Target {
     //} else {
       
     //}
-    return distance.setMag(map(distance.mag(), 1, field.getWidth(), animal.getVelocityLimit(), 1));
+    return distance.setMag(map(distance.mag(), 1, animal.getMaxVelocityLimit(), animal.getMaxVelocityLimit(), 1));
   }
 }

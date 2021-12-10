@@ -88,7 +88,7 @@ void startGame() {
   weapon = new Weapon(100, 300, 1);
   hunter = new Hunter(field, weapon);
 
-  for (int i = 0; i < 1; i++) {
+  for (int i = 0; i < 3; i++) {
     field.addOrganism(new Rebbit(field));
   }
   field.addOrganism(hunter);

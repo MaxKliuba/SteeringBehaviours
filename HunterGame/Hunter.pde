@@ -7,7 +7,7 @@ public class Hunter extends Organism {
   private boolean[] moves;
 
   public Hunter(Field field, Weapon weapon) {
-    super(field, 1, 1, new PVector(field.getWidth() / 2, field.getHeight() / 2), 10, 30, color(0, 128, 128));
+    super(field, 1, 1, 30, color(0, 128, 128), new PVector(field.getWidth() / 2, field.getHeight() / 2), 10);
 
     this.weapon = weapon;
     bullets = new ArrayList<Bullet>();
@@ -60,15 +60,15 @@ public class Hunter extends Organism {
     time = millis();
 
     if (moves[0]) {
-      getPosition().y -= getVelocityLimit() * deltaTime;
+      getPosition().y -= getMaxVelocityLimit() * deltaTime;
     } else if (moves[1]) {
-      getPosition().y += getVelocityLimit() * deltaTime;
+      getPosition().y += getMaxVelocityLimit() * deltaTime;
     }
 
     if (moves[2]) {
-      getPosition().x -= getVelocityLimit() * deltaTime;
+      getPosition().x -= getMaxVelocityLimit() * deltaTime;
     } else if (moves[3]) {
-      getPosition().x += getVelocityLimit() * deltaTime;
+      getPosition().x += getMaxVelocityLimit() * deltaTime;
     }
   }
 }

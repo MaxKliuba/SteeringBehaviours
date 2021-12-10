@@ -3,24 +3,44 @@ public abstract class Animal extends Organism {
   private static final float EPSILON = 0.05f;
 
   private float steeringForceLimit;
+  private float minVelocityLimit;
+  private int minFeelDistance;
+  private int maxFeelDistance;
   private PVector velocity;
   private PVector acceleration;
 
   private long time;
 
-  public Animal(Field field, int health, int mass, float velocityLimit, int size, color objColor, float steeringForceLimit) {
-    super(field, health, mass, new PVector(random(field.getPosition().x + 100, field.getWidth() - 100), random(field.getPosition().y + 100, field.getHeight() - 100)), velocityLimit, size, objColor);
+  public Animal(Field field, int health, int mass, int size, color objColor, 
+    float maxVelocityLimit, float minVelocityLimit, float steeringForceLimit, int maxFeelDistance, int minFeelDistance) {
+    super(field, health, mass, size, objColor, 
+      new PVector(random(field.getPosition().x + 100, field.getWidth() - 100), random(field.getPosition().y + 100, field.getHeight() - 100)), maxVelocityLimit);
 
+    this.minVelocityLimit = minVelocityLimit;
     this.steeringForceLimit = steeringForceLimit;
+    this.maxFeelDistance = maxFeelDistance;
+    this.minFeelDistance = minFeelDistance;
 
     this.velocity = new PVector(0.0f, 0.0f);
     this.acceleration = new PVector(0.0f, 0.0f);
 
     time = millis();
   }
+  
+  public float getMinVelocityLimit() {
+    return minVelocityLimit;
+  }
 
   public float getSteeringForceLimit() {
     return steeringForceLimit;
+  }
+  
+  public int getMaxFeelDistance() {
+    return maxFeelDistance;
+  }
+  
+  public int getMinFeelDistance() {
+    return minFeelDistance;
   }
 
   public PVector getVelocity() {
@@ -54,16 +74,13 @@ public abstract class Animal extends Organism {
 
   private void applySteeringForce() {
     ArrayList<Target> targets = getTargets();
-    targets.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y)));
-    targets.add(new AvoidEdges(new PVector(field.getPosition().x + field.getWidth(), getPosition().y)));
-    targets.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y + field.getHeight())));
-    targets.add(new AvoidEdges(new PVector(field.getPosition().x, getPosition().y)));
-
     PVector steering = new PVector(0.0f, 0.0f);
 
     for (int i = 0; i < targets.size(); i++) {
       PVector desiredVelocity = targets.get(i).getDesiredVelocity(this);
-      steering.add(PVector.sub(desiredVelocity, velocity));
+      if (desiredVelocity != null) {
+        steering.add(PVector.sub(desiredVelocity, velocity));
+      }
     }
     steering.sub(velocity);
 
@@ -80,8 +97,8 @@ public abstract class Animal extends Organism {
 
     velocity.add(PVector.mult(acceleration, deltaTime));
 
-    if (velocity.mag() > getVelocityLimit()) {
-      velocity.setMag(getVelocityLimit());
+    if (velocity.mag() > getMaxVelocityLimit()) {
+      velocity.setMag(getMaxVelocityLimit());
     } else if (velocity.mag() < EPSILON) {
       velocity.set(0.0f, 0.0f);
     }

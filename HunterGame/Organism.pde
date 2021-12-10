@@ -2,20 +2,20 @@ public abstract class Organism {
 
   private Field field;
   private int health;
-  private PVector position;
-  private float velocityLimit;
   private float mass;
   private int size;
   private color objColor;
+  private PVector position;
+  private float maxVelocityLimit;
 
-  public Organism(Field field, int health, int mass, PVector position, float velocityLimit, int size, color objColor) {
+  public Organism(Field field, int health, int mass, int size, color objColor, PVector position, float maxVelocityLimit) {
     this.field = field;
     this.health = health;
     this.mass = mass;
-    this.position = position;
-    this.velocityLimit = velocityLimit;
     this.size = size;
     this.objColor = objColor;
+    this.position = position;
+    this.maxVelocityLimit = maxVelocityLimit;
   }
 
   public Field getField() {
@@ -42,20 +42,20 @@ public abstract class Organism {
     return position;
   }
 
-  public void setPosition(PVector position) {
-    this.position = position;
-  }
-
-  public float getVelocityLimit() {
-    return velocityLimit;
-  }
-
   public int getSize() {
     return size;
   }
 
   public color getColor() {
     return objColor;
+  }
+
+  public void setPosition(PVector position) {
+    this.position = position;
+  }
+
+  public float getMaxVelocityLimit() {
+    return maxVelocityLimit;
   }
 
   public abstract void update();
