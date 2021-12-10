@@ -1,7 +1,7 @@
 public class Deer extends Animal {
 
   public Deer(Field field) {
-    super(field, 1, 1, 20, color(210, 90, 40), 25, 25, 10, 300, 50);
+    super(field, 1, 1, 20, color(210, 90, 40), 25, 25, 2, 300, 70);
   }
 
   protected ArrayList<Target> getTargets() {

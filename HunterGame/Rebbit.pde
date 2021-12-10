@@ -1,7 +1,7 @@
 public class Rebbit extends Animal {
 
   public Rebbit(Field field) {
-    super(field, 1, 1, 15, color(190, 190, 190), 60, 10, 5, 100, 0);
+    super(field, 1, 1, 15, color(190, 190, 190), 70, 10, 5, 100, 0);
   }
 
   protected ArrayList<Target> getTargets() {

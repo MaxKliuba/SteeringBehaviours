@@ -99,11 +99,11 @@ void startGame() {
   weapon = new Weapon(100, 300, 1);
   hunter = new Hunter(field, weapon);
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 15; i++) {
     field.addOrganism(new Rebbit(field));
   }
 
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 15; i++) {
     field.addOrganism(new Deer(field));
   }
 
