@@ -157,16 +157,21 @@ void drawGamePage() {
         isWin = false;
       }
     }
-
-    noStroke();
-    fill(color(255, 0, 0));
-    ellipse(mouseX, mouseY, 5, 5);
-
-    textFont(infoFont);
-    textAlign(LEFT);
-    fill(color(255, 255, 255));
-    text(String.format("[%s/%s]", hunter.getWeapon().getBulletCount(), hunter.getWeapon().getMaxBulletCount()), 50, 40);
   }
+
+  if (field.getOrganisms().size() == 1 && field.getOrganisms().get(0).equals(hunter)) {
+    currentPage = END_GAME_PAGE;
+    isWin = true;
+  }
+
+  noStroke();
+  fill(color(255, 0, 0));
+  ellipse(mouseX, mouseY, 5, 5);
+
+  textFont(infoFont);
+  textAlign(LEFT);
+  fill(color(255, 255, 255));
+  text(String.format("[%s/%s]", hunter.getWeapon().getBulletCount(), hunter.getWeapon().getMaxBulletCount()), 50, 40);
 }
 
 void drawEndGamePage() {
