@@ -23,6 +23,7 @@ Button exitButton;
 Slider rabbitCountSlider;
 Slider deerCountSlider;
 Slider wolfCountSlider;
+Toggle avoidCursorToggle;
 
 Field field = new Field(WIDTH - 100, HEIGHT - 100, 50, color(50, 30, 30), color(80, 140, 45));
 Weapon weapon;
@@ -75,9 +76,20 @@ void setup() {
     .setColorForeground(color(120, 80, 80))
     .setColorActive(color(140, 100, 100));
 
+  avoidCursorToggle = cp5.addToggle("toggleOnClick")
+    .setLabel("run away from the cursor")
+    .setPosition(WIDTH / 2 - 250, field.getPosition().y + 460)
+    .setSize(100, 40)
+    .setValue(false)
+    .setMode(ControlP5.SWITCH)
+    .setColorBackground(color(140, 100, 100))
+    .setColorActive(color(50, 30, 30));
+
+  avoidCursorToggle.getCaptionLabel().align(ControlP5.LEFT, ControlP5.CENTER).setPaddingX(105);
+
   startGameButton = cp5.addButton("startGameButtonOnClick")
     .setLabel("play")
-    .setPosition(WIDTH / 2 - 100, field.getPosition().y + 550)
+    .setPosition(WIDTH / 2 - 100, field.getPosition().y + 580)
     .setSize(200, 50)
     .setColorBackground(color(50, 30, 30))
     .setColorForeground(color(120, 80, 80))
@@ -111,6 +123,8 @@ void drawMenuPage() {
   textAlign(CENTER);
   fill(color(255, 255, 255));
   text("Hunter Game", WIDTH / 2, field.getPosition().y + 120);
+
+  avoidCursorToggle.getCaptionLabel().setText("run away from the cursor [" + (avoidCursorToggle.getBooleanValue() ? "on" : "off") + "]");
 }
 
 void drawGamePage() {
@@ -249,15 +263,15 @@ void startGameButtonOnClick() {
   hunter = new Hunter(field, weapon);
 
   for (int i = 0; i < rabbitCountSlider.getValue(); i++) {
-    field.addOrganism(new Rabbit(field));
+    field.addOrganism(new Rabbit(field, avoidCursorToggle.getBooleanValue()));
   }
 
   for (int i = 0; i < deerCountSlider.getValue(); i++) {
-    field.addOrganism(new Deer(field));
+    field.addOrganism(new Deer(field, avoidCursorToggle.getBooleanValue()));
   }
 
   for (int i = 0; i < wolfCountSlider.getValue(); i++) {
-    field.addOrganism(new Wolf(field));
+    field.addOrganism(new Wolf(field, false));
   }
 
   field.addOrganism(hunter);
@@ -276,4 +290,7 @@ void deerCountSliderTick(int value) {
 }
 
 void wolfCountSliderTick(int value) {
+}
+
+void toggleOnClick(boolean value) {
 }

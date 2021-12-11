@@ -1,7 +1,7 @@
 public class Rabbit extends Animal {
 
-  public Rabbit(Field field) {
-    super(field, 1, 1, 15, color(190, 190, 190), 70, 10, 5, 100, 0);
+  public Rabbit(Field field, boolean avoidCursor) {
+    super(field, 1, 1, 15, color(190, 190, 190), 70, 10, 5, 100, 0, avoidCursor);
   }
 
   protected ArrayList<DesiredVelocityProvider> getDesiredVelocityProviders() {
@@ -20,7 +20,9 @@ public class Rabbit extends Animal {
       }
     }
     providers.add(new Wander(getPosition()));
-    //targets.add(new Flee(new PVector(mouseX, mouseY)));
+    if (isAvoidCursor()) {
+      providers.add(new Flee(new PVector(mouseX, mouseY)));
+    }
 
     return providers;
   }

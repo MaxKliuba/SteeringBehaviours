@@ -5,8 +5,8 @@ public class Wolf extends Animal {
 
   private long lifeTimer;
 
-  public Wolf(Field field) {
-    super(field, 1, 1, 25, color(60, 60, 70), 40, 40, 10, 200, 0);
+  public Wolf(Field field, boolean avoidCursor) {
+    super(field, 1, 1, 25, color(60, 60, 70), 40, 40, 10, 200, 0, avoidCursor);
 
     this.damage = 1;
     this.lifeSpan = 20000;
@@ -30,6 +30,9 @@ public class Wolf extends Animal {
       }
     }
     providers.add(new Wander(getPosition()));
+    if (isAvoidCursor()) {
+      providers.add(new Flee(new PVector(mouseX, mouseY)));
+    }
 
     return providers;
   }

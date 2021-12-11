@@ -6,13 +6,14 @@ public abstract class Animal extends Organism {
   private float minVelocityLimit;
   private int minFeelDistance;
   private int maxFeelDistance;
+  private boolean avoidCursor;
   private PVector velocity;
   private PVector acceleration;
 
   private long time;
 
   public Animal(Field field, int health, int mass, int size, color objColor, 
-    float maxVelocityLimit, float minVelocityLimit, float steeringForceLimit, int maxFeelDistance, int minFeelDistance) {
+    float maxVelocityLimit, float minVelocityLimit, float steeringForceLimit, int maxFeelDistance, int minFeelDistance, boolean avoidCursor) {
     super(field, health, mass, size, objColor, 
       new PVector(random(field.getPosition().x + 100, field.getWidth() - 100), random(field.getPosition().y + 100, field.getHeight() - 100)), maxVelocityLimit);
 
@@ -20,6 +21,7 @@ public abstract class Animal extends Organism {
     this.steeringForceLimit = steeringForceLimit;
     this.maxFeelDistance = maxFeelDistance;
     this.minFeelDistance = minFeelDistance;
+    this.avoidCursor = avoidCursor;
 
     this.velocity = new PVector(0.0f, 0.0f);
     this.acceleration = new PVector(0.0f, 0.0f);
@@ -41,6 +43,10 @@ public abstract class Animal extends Organism {
 
   public int getMinFeelDistance() {
     return minFeelDistance;
+  }
+
+  public boolean isAvoidCursor() {
+    return avoidCursor;
   }
 
   public PVector getVelocity() {

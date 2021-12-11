@@ -1,7 +1,7 @@
 public class Deer extends Animal {
 
-  public Deer(Field field) {
-    super(field, 1, 1, 20, color(210, 90, 40), 25, 25, 2, 300, 70);
+  public Deer(Field field, boolean avoidCursor) {
+    super(field, 1, 1, 20, color(210, 90, 40), 25, 25, 2, 300, 70, avoidCursor);
   }
 
   protected ArrayList<DesiredVelocityProvider> getDesiredVelocityProviders() {
@@ -24,7 +24,9 @@ public class Deer extends Animal {
       }
     }
     providers.add(new Wander(getPosition()));
-    //targets.add(new Flee(new PVector(mouseX, mouseY)));
+    if (isAvoidCursor()) {
+      providers.add(new Flee(new PVector(mouseX, mouseY)));
+    }
 
     return providers;
   }
