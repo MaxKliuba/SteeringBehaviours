@@ -1,4 +1,4 @@
-public class Flee extends Target {
+public class Flee extends DesiredVelocityProvider {
 
   public Flee(PVector position) {
     super(position);

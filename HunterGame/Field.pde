@@ -2,15 +2,17 @@ public class Field {
 
   private int fieldWidth;
   private int fieldHeight;
+  private int chasmSize;
 
   private color chasmColor;
   private color fieldColor;
 
   private ArrayList<Organism> organisms;
 
-  public Field (int fieldWidth, int fieldHeight, color chasmColor, color fieldColor) {
+  public Field (int fieldWidth, int fieldHeight, int chasmSize, color chasmColor, color fieldColor) {
     this.fieldWidth = fieldWidth;
     this.fieldHeight = fieldHeight;
+    this.chasmSize = chasmSize;
     this.chasmColor = chasmColor;
     this.fieldColor = fieldColor;
 
@@ -25,8 +27,12 @@ public class Field {
     return fieldHeight;
   }
 
+  public int getChasmSize() {
+    return chasmSize;
+  }
+
   public PVector getPosition() {
-    return new PVector((width - fieldWidth) / 2, (height - fieldHeight) / 2);
+    return new PVector(chasmSize, chasmSize);
   }
 
   public ArrayList<Organism> getOrganisms() {
@@ -38,10 +44,9 @@ public class Field {
   }
 
   public void update() {
-    PVector position = getPosition();
     background(chasmColor);
     fill(fieldColor);
-    rect(position.x, position.y, fieldWidth, fieldHeight, 15);
+    rect(getPosition().x, getPosition().y, fieldWidth, fieldHeight, 15);
   }
 
   public void reset() {

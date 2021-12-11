@@ -14,24 +14,24 @@ public class Wolf extends Animal {
     this.lifeTimer = millis();
   }
 
-  protected ArrayList<Target> getTargets() {
-    ArrayList<Target> targets = new ArrayList<Target>();
+  protected ArrayList<DesiredVelocityProvider> getDesiredVelocityProviders() {
+    ArrayList<DesiredVelocityProvider> providers = new ArrayList<DesiredVelocityProvider>();
 
-    targets.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y)));
-    targets.add(new AvoidEdges(new PVector(field.getPosition().x + field.getWidth(), getPosition().y)));
-    targets.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y + field.getHeight())));
-    targets.add(new AvoidEdges(new PVector(field.getPosition().x, getPosition().y)));
+    providers.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y)));
+    providers.add(new AvoidEdges(new PVector(field.getPosition().x + field.getWidth(), getPosition().y)));
+    providers.add(new AvoidEdges(new PVector(getPosition().x, field.getPosition().y + field.getHeight())));
+    providers.add(new AvoidEdges(new PVector(field.getPosition().x, getPosition().y)));
 
     for (int i = 0; i < field.getOrganisms().size(); i++) {
       Organism organism = field.getOrganisms().get(i);
 
       if (!(organism instanceof Wolf)) {
-        targets.add(new Seek(organism.getPosition().copy()));
+        providers.add(new Seek(organism.getPosition().copy()));
       }
     }
-    targets.add(new Wander(getPosition()));
+    providers.add(new Wander(getPosition()));
 
-    return targets;
+    return providers;
   }
 
   public void update() {

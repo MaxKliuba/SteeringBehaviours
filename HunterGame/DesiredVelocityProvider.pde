@@ -1,8 +1,8 @@
-public abstract class Target {
+public abstract class DesiredVelocityProvider {
 
   private PVector position;
 
-  public Target(PVector position) {
+  public DesiredVelocityProvider(PVector position) {
     this.position = position;
   }
 

@@ -59,7 +59,7 @@ public abstract class Animal extends Organism {
     applyForces();
   }
 
-  protected abstract ArrayList<Target> getTargets();
+  protected abstract ArrayList<DesiredVelocityProvider> getDesiredVelocityProviders();
 
   private void applyForce(PVector force) {
     force.div(getMass());
@@ -73,11 +73,11 @@ public abstract class Animal extends Organism {
   }
 
   private void applySteeringForce() {
-    ArrayList<Target> targets = getTargets();
+    ArrayList<DesiredVelocityProvider> providers = getDesiredVelocityProviders();
     PVector steering = new PVector(0.0f, 0.0f);
 
-    for (int i = 0; i < targets.size(); i++) {
-      PVector desiredVelocity = targets.get(i).getDesiredVelocity(this);
+    for (int i = 0; i < providers.size(); i++) {
+      PVector desiredVelocity = providers.get(i).getDesiredVelocity(this);
       if (desiredVelocity != null) {
         steering.add(PVector.sub(desiredVelocity, velocity));
       }
@@ -108,6 +108,6 @@ public abstract class Animal extends Organism {
 
     stroke(0);
     fill(getColor());
-    ellipse(getPosition().x, getPosition().y, getSize(), getSize());
+    circle(getPosition().x, getPosition().y, getSize());
   }
 }

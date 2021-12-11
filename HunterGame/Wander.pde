@@ -1,4 +1,4 @@
-public class Wander extends Target {
+public class Wander extends DesiredVelocityProvider {
 
   private float circleDistance = 5;
   private float circleRadius = 1;
@@ -21,7 +21,5 @@ public class Wander extends Target {
     PVector vector = new PVector(cos(radians(angle)), sin(radians(angle))).mult(circleRadius);
 
     return PVector.add(futurePos, vector).sub(animal.getPosition()).normalize().mult(animal.getMinVelocityLimit());
-
-    //return animal.getVelocity().copy().rotate(radians(1));
   }
 }

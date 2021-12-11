@@ -1,4 +1,4 @@
-public class AvoidEdges extends Target {
+public class AvoidEdges extends DesiredVelocityProvider {
 
   public AvoidEdges(PVector position) {
     super(position);
@@ -13,6 +13,5 @@ public class AvoidEdges extends Target {
     }
 
     return distance.normalize().mult(-animal.getMaxVelocityLimit());
-    //return distance.setMag(map(distance.mag(), 0, avoidDistance, -animal.getMaxVelocityLimit(), 0));
   }
 }

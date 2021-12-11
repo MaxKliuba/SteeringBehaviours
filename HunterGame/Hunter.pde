@@ -40,7 +40,7 @@ public class Hunter extends Organism {
 
     stroke(0);
     fill(getColor());
-    ellipse(getPosition().x, getPosition().y, getSize(), getSize());
+    circle(getPosition().x, getPosition().y, getSize());
   }
 
   public void setMove(int i, boolean state) {

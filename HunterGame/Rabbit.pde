@@ -1,7 +1,7 @@
-public class Deer extends Animal {
+public class Rabbit extends Animal {
 
-  public Deer(Field field) {
-    super(field, 1, 1, 20, color(210, 90, 40), 25, 25, 2, 300, 70);
+  public Rabbit(Field field) {
+    super(field, 1, 1, 15, color(190, 190, 190), 70, 10, 5, 100, 0);
   }
 
   protected ArrayList<DesiredVelocityProvider> getDesiredVelocityProviders() {
@@ -15,11 +15,7 @@ public class Deer extends Animal {
     for (int i = 0; i < field.getOrganisms().size(); i++) {
       Organism organism = field.getOrganisms().get(i);
 
-      if (organism instanceof Deer) {
-        providers.add(new Seek(organism.getPosition().copy()));
-      }
-
-      if (organism instanceof Wolf || organism instanceof Hunter) {
+      if (!organism.equals(this)) {
         providers.add(new Flee(organism.getPosition().copy()));
       }
     }

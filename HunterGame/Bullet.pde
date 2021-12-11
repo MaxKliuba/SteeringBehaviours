@@ -36,7 +36,7 @@ public class Bullet {
 
     noStroke();
     fill(objColor);
-    ellipse(position.x, position.y, size, size);
+    circle(position.x, position.y, size);
   }
 
   public boolean isMoving() {
